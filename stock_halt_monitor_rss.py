@@ -15,6 +15,15 @@ TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
 YOUR_PHONE_NUMBER = os.getenv('YOUR_PHONE_NUMBER')
+
+# Debug logging for Twilio setup
+print("\nTwilio Configuration Status:")
+print(f"Account SID present: {'Yes' if TWILIO_ACCOUNT_SID else 'No'}")
+print(f"Auth Token present: {'Yes' if TWILIO_AUTH_TOKEN else 'No'}")
+print(f"Twilio Phone Number: {TWILIO_PHONE_NUMBER}")
+print(f"Your Phone Number: {YOUR_PHONE_NUMBER}\n")
+
+# Initialize Twilio client
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 # Set to store processed entries to avoid duplicates
