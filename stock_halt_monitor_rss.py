@@ -5,39 +5,43 @@ from datetime import datetime
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 import requests
-
-# Uncomment the following lines to enable Twilio SMS notifications
-# from twilio.rest import Client
+from twilio.rest import Client
 
 # Load environment variables
 load_dotenv()
 
-# Uncomment and configure these for Twilio
-# TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
-# TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
-# TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
-# YOUR_PHONE_NUMBER = os.getenv('YOUR_PHONE_NUMBER')
-# client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+# Configure Twilio
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
+YOUR_PHONE_NUMBER = os.getenv('YOUR_PHONE_NUMBER')
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 # Set to store processed entries to avoid duplicates
 processed_entries = set()
 last_check_time = None
 
 def send_notification(message):
-    """Print notification to console instead of sending SMS."""
-    print("\n" + "="*50)
-    print(message)
-    print("="*50 + "\n")
-    # To enable SMS, uncomment below and comment out the print statements:
-    # try:
-    #     sms = client.messages.create(
-    #         body=message,
-    #         from_=TWILIO_PHONE_NUMBER,
-    #         to=YOUR_PHONE_NUMBER
-    #     )
-    #     print(f"SMS sent! SID: {sms.sid}")
-    # except Exception as e:
-    #     print(f"Error sending SMS: {str(e)}")
+    """Send notification via SMS using Twilio."""
+    try:
+        # Send SMS
+        sms = client.messages.create(
+            body=message,
+            from_=TWILIO_PHONE_NUMBER,
+            to=YOUR_PHONE_NUMBER
+        )
+        print(f"SMS sent! SID: {sms.sid}")
+        
+        # Also print to console
+        print("\n" + "="*50)
+        print(message)
+        print("="*50 + "\n")
+    except Exception as e:
+        print(f"Error sending SMS: {str(e)}")
+        # Fallback to console output if SMS fails
+        print("\n" + "="*50)
+        print(message)
+        print("="*50 + "\n")
 
 def fetch_feed():
     """Fetch the RSS feed with cache-busting headers."""
