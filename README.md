@@ -1,32 +1,37 @@
-# Stock Halt Monitor
+# Stock Halt Monitor (RSS Feed Version)
 
-A real-time monitoring system that alerts you via SMS when stocks are halted on major exchanges. The program uses the NASDAQ Trader feed to monitor trading halts and sends notifications using Twilio.
+A real-time monitoring system that alerts you via SMS when stocks are halted on major exchanges. The program uses the NASDAQ RSS feed to monitor trading halts and sends notifications using Twilio.
 
 ## Features
 
-- Real-time monitoring of trading halts across major exchanges
+- Real-time monitoring of trading halts via NASDAQ RSS feed
 - SMS notifications via Twilio
 - Detailed halt information including:
-  - Ticker symbol
+  - Ticker symbol and company name
   - Market (NASDAQ, NYSE, etc.)
   - Halt reason code
-  - Halt date and time
-  - Resumption date and times
+  - Actual halt time (from the halt table)
+  - Resumption quote and trade times
+  - Published time
+- HTML table parsing for accurate halt details
 - Duplicate detection to prevent spam
-- Configurable monitoring interval
+- 60-second monitoring interval
+- Terminal output with detailed debug information
+- Cache-busting to ensure fresh feed data
 
 ## Prerequisites
 
 - Python 3.7 or higher
 - A Twilio account (for SMS functionality)
 - Your Twilio credentials (Account SID and Auth Token)
+- A regular Twilio phone number (not toll-free)
 
 ## Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/stock-halt-monitor.git
-   cd stock-halt-monitor
+   git clone https://github.com/fyoung28/Stock-Halt-Monitor.git
+   cd Stock-Halt-Monitor
    ```
 
 2. Install the required dependencies:
@@ -46,13 +51,14 @@ A real-time monitoring system that alerts you via SMS when stocks are halted on 
 
 Run the program:
 ```bash
-python stock_halt_monitor.py
+python3 stock_halt_monitor_rss.py
 ```
 
 The program will:
-- Monitor the NASDAQ Trader halts feed every 30 seconds
-- Send an SMS notification when a stock is halted
-- Include detailed information about the halt
+- Monitor the NASDAQ RSS feed every 60 seconds
+- Show detailed debug information in the terminal
+- Send an SMS notification when a new halt is detected
+- Include comprehensive information about the halt
 - Continue running until manually stopped (Ctrl+C)
 
 ## Halt Codes
@@ -83,5 +89,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- NASDAQ Trader for providing the halts feed
-- Twilio for SMS functionality 
+- NASDAQ Trader for providing the RSS feed
+- Twilio for SMS functionality
+- BeautifulSoup for HTML parsing 
